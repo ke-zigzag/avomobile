@@ -4,17 +4,16 @@ import pytorch_lightning as pl
 import torch.quantization
 
 #densenetの特徴量をインポート
-from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
-#feature = densenet121(pretrained=True)
+from torchvision.models import mobilenet_v3_small
+feature =  mobilenet_v3_small()
 
 #モデルの定義
 class Net(pl.LightningModule):
 
     def __init__(self):
-        super().__init__()
-        weights = MobileNet_V3_Small_Weights.IMAGENET1K_V1
-        self.feature = mobilenet_v3_small(weights=weights)
-        self.fc = nn.Linear(1000, 2)
+       super().__init__()
+       self.feature = mobilenet_v3_small()
+       self.fc = nn.Linear(1000, 2)
 
 
     def forward(self, x):

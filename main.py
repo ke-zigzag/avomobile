@@ -1,7 +1,7 @@
 #必要なライブラリーのインストール
 from fastapi import FastAPI, File, UploadFile
 import io
-from model import model
+from model import quantized_model
 from PIL import Image
 from torchvision import transforms
 import torch
@@ -36,8 +36,7 @@ async def predit(file: UploadFile = File(...)):
     image_tensor = transform(output)
     
     #予測を実行
-    quantized_model = torch.quantization.quantize_dynamic(model, {nn.Linear}, dtype=torch.qint8)
-    prediction =quantized_model(image_tensor.unsqueeze(0))
+    prediction = quantized_model(image_tensor.unsqueeze(0))
     y = F.softmax(prediction, dim=1)
     result = torch.argmax(y, dim=1).item()
 
