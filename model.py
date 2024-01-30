@@ -22,9 +22,9 @@ class Net(pl.LightningModule):
         return h
 
 #モデルインスタンスを作成し、重みを読み込む
-model = Net().cpu()
+model = Net().cpu().eval()
 model.load_state_dict(torch.load('mobilenet.pt', map_location=torch.device('cpu')))
-model = model.eval()
+
 
 #モデルの量子化
 dummy_input = torch.randn(1, 3, 224, 224)  # 仮の入力サイズを指定

@@ -12,12 +12,12 @@ if upload_file is not None:
     
     #FASTAPIサーバーに画像を送信
     files = {"file":upload_file.getvalue()}
-    response = requests.post("https://avofinal.onrender.com/predict", files=files)
+    #response = requests.post("https://avofinal.onrender.com/predict", files=files)
     #/predict
 
     
     #ローカル用
-    #response = requests.post("http://localhost:8000/predict", files=files)
+    response = requests.post("http://localhost:8000/predict", files=files)
 
 
     # 応答の内容をコンソールに表示
