@@ -17,7 +17,7 @@ if upload_file is not None:
 
     
     #ローカル用
-    response = requests.post("http://localhost:10000/predict", files=files)
+    response = requests.post("http://localhost:8000/predict", files=files)
 
 
     # 応答の内容をコンソールに表示

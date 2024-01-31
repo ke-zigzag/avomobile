@@ -25,6 +25,10 @@ transform = transforms.Compose([
 async def index():
     return {"avocado": 'avocado_checker'}
 
+@app.get("/health")
+async def health_check():
+    return {"status": "OK"}
+
 @app.post("/predict")
 async def predit(file: UploadFile = File(...)):
     #画像を読み込む
