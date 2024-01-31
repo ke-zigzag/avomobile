@@ -30,7 +30,7 @@ async def health_check():
     return {"status": "OK"}
 
 @app.post("/predict")
-async def predit(file: UploadFile = File(...)):
+async def predict(file: UploadFile = File(...)):
     #画像を読み込む
     image_data = await file.read()
     image = Image.open(io.BytesIO(image_data))
