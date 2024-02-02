@@ -41,5 +41,5 @@ async def predict(file: UploadFile = File(...)):
     result = torch.argmax(y, dim=1).item()
     result = str(result)
     
-    return{"result": str(result)}
+    return JSONResponse(content=jsonable_encoder({"result": result}))
     
