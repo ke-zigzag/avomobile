@@ -1,7 +1,7 @@
 #必要なライブラリーのインストール
 from fastapi import FastAPI, File, UploadFile
 from io import BytesIO
-from model import quantized_model
+from model import avomodel
 from PIL import Image
 from torchvision import transforms
 import torch
@@ -10,6 +10,7 @@ from torch.nn import functional as F
 #背景切り取りライブラリー
 #from tqdm import tqdm
 from rembg import remove
+
 
 
 app = FastAPI()
@@ -30,7 +31,7 @@ async def health_check():
     return {"status": "OK"}
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...)):
+async def predict(file:UploadFile = File(...)):
     #画像を読み込む
     image_data = await file.read()
     image = Image.open(BytesIO(image_data))
@@ -41,7 +42,7 @@ async def predict(file: UploadFile = File(...)):
     
     #予測を実行
     with torch.no_grad():
-        prediction = quantized_model(image_tensor.unsqueeze(0))
+        prediction = avomodel(image_tensor.unsqueeze(0))
         y = F.softmax(prediction, dim=1)
         result = torch.argmax(y, dim=1).item()
 
