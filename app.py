@@ -11,10 +11,9 @@ if uploaded_file is not None:
     st.image(image, caption="Avocado Image", width=250)
     
     #FASTAPIサーバーに画像を送信
-    files = {"file":("filename", uploaded_file.getvalue())}
-    #files = {"file":uploaded_file.getvalue()}
+    #files = {"file":("filename", uploaded_file.getvalue())}
+    files = {"file":uploaded_file.getvalue()}
     #response = requests.post("https://avofinal.onrender.com/predict", files=files)
-    #/predict
 
     
     #ローカル用
