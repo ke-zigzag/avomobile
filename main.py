@@ -1,15 +1,14 @@
 #必要なライブラリーのインストール
 from fastapi import FastAPI, File, UploadFile
-import io
 from io import BytesIO
 from model import quantized_model
 from PIL import Image
 from torchvision import transforms
 import torch
-import torch.nn as nn
+import torch.nn 
 from torch.nn import functional as F
 #背景切り取りライブラリー
-from tqdm import tqdm
+#from tqdm import tqdm
 from rembg import remove
 
 
@@ -34,7 +33,7 @@ async def health_check():
 async def predict(file: UploadFile = File(...)):
     #画像を読み込む
     image_data = await file.read()
-    image = Image.open(io.BytesIO(image_data))
+    image = Image.open(BytesIO(image_data))
 
     #画像をモデルに適した形に変換
     output = remove(image).convert('RGB')
