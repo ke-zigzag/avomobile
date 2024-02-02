@@ -1,17 +1,16 @@
 #必要なライブラリーのインストール
 from fastapi import FastAPI, File, UploadFile
-from io import BytesIO
+import io
 from model import avomodel
 from PIL import Image
 from torchvision import transforms
 import torch
-import torch.nn 
+import torch.nn as nn
 from torch.nn import functional as F
-#背景切り取りライブラリー
-#from tqdm import tqdm
+from tqdm import tqdm #背景切り取りライブラリー
 from rembg import remove
-
-
+from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
@@ -26,25 +25,21 @@ transform = transforms.Compose([
 async def index():
     return {"avocado": 'avocado_checker'}
 
-@app.get("/health")
-async def health_check():
-    return {"status": "OK"}
-
 @app.post("/predict")
-async def predict(file:UploadFile = File(...)):
+async def predict(file: UploadFile = File(...)):
     #画像を読み込む
     image_data = await file.read()
-    image = Image.open(BytesIO(image_data))
+    image = Image.open(io.BytesIO(image_data))
 
     #画像をモデルに適した形に変換
     output = remove(image).convert('RGB')
     image_tensor = transform(output)
     
     #予測を実行
-    with torch.no_grad():
-        prediction = avomodel(image_tensor.unsqueeze(0))
-        y = F.softmax(prediction, dim=1)
-        result = torch.argmax(y, dim=1).item()
-
+    prediction = avomodel(image_tensor.unsqueeze(0))
+    y = F.softmax(prediction, dim=1)
+    result = torch.argmax(y, dim=1).item()
+    result = str(result)
     
     return{"result": str(result)}
+    
